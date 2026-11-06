@@ -23,7 +23,8 @@ import {
   ChevronRight,
   ShieldAlert,
   Clock,
-  Sparkles
+  Sparkles,
+  Download
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -38,6 +39,7 @@ import {
 } from 'recharts';
 import { Lead, UserAccount, KanbanStatus } from '../../types';
 import { INITIAL_LEADS, INITIAL_USERS, OFFICE_DATA, PRACTICE_AREAS } from '../../data/initialData';
+import { LeadDetailModal } from './LeadDetailModal';
 
 interface LawyerCrmProps {
   onBackToSite: () => void;
@@ -102,6 +104,8 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterArea, setFilterArea] = useState('todas');
   const [draggedLeadId, setDraggedLeadId] = useState<string | null>(null);
+  const [draggedOverColumn, setDraggedOverColumn] = useState<KanbanStatus | null>(null);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   // New Lead Form in CRM
   const [newLeadName, setNewLeadName] = useState('');
@@ -210,30 +214,107 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
     setLoginPassword('');
   };
 
-  // Drag and Drop Kanban
-  const handleDragStart = (leadId: string) => {
+  // Enhanced Drag and Drop Kanban with Automatic Timeline Recording
+  const handleDragStart = (e: React.DragEvent, leadId: string) => {
+    e.dataTransfer.setData('text/plain', leadId);
+    e.dataTransfer.effectAllowed = 'move';
     setDraggedLeadId(leadId);
+  };
+
+  const handleDragOver = (e: React.DragEvent, columnId: KanbanStatus) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (draggedOverColumn !== columnId) {
+      setDraggedOverColumn(columnId);
+    }
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDraggedOverColumn(null);
   };
 
   const handleDrop = (targetStatus: KanbanStatus) => {
     if (!draggedLeadId) return;
+    const leadToMove = leads.find((l) => l.id === draggedLeadId);
+    if (!leadToMove) {
+      setDraggedLeadId(null);
+      setDraggedOverColumn(null);
+      return;
+    }
+
+    if (leadToMove.status === targetStatus) {
+      setDraggedLeadId(null);
+      setDraggedOverColumn(null);
+      return;
+    }
+
+    const prevLabel = KANBAN_COLUMNS.find((c) => c.id === leadToMove.status)?.label || leadToMove.status;
+    const newLabel = KANBAN_COLUMNS.find((c) => c.id === targetStatus)?.label || targetStatus;
+
+    const moveEvent = {
+      id: `int-move-${Date.now()}`,
+      type: 'internal' as const,
+      title: 'Etapa Alterada no Kanban',
+      description: `Cartão arrastado de "${prevLabel}" para "${newLabel}".`,
+      date: new Date().toISOString(),
+      author: currentUser?.name || 'Advogado Responsável',
+    };
+
     setLeads((prev) =>
       prev.map((lead) => {
         if (lead.id === draggedLeadId) {
-          return {
+          const updated = {
             ...lead,
             status: targetStatus,
             updatedAt: new Date().toISOString(),
+            interactions: [moveEvent, ...(lead.interactions || [])],
           };
+          if (selectedLead && selectedLead.id === lead.id) {
+            setSelectedLead(updated);
+          }
+          return updated;
         }
         return lead;
       })
     );
     setDraggedLeadId(null);
+    setDraggedOverColumn(null);
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
+  const handleMoveLeadDirectly = (leadId: string, targetStatus: KanbanStatus) => {
+    const leadToMove = leads.find((l) => l.id === leadId);
+    if (!leadToMove || leadToMove.status === targetStatus) return;
+
+    const prevLabel = KANBAN_COLUMNS.find((c) => c.id === leadToMove.status)?.label || leadToMove.status;
+    const newLabel = KANBAN_COLUMNS.find((c) => c.id === targetStatus)?.label || targetStatus;
+
+    const moveEvent = {
+      id: `int-move-${Date.now()}`,
+      type: 'internal' as const,
+      title: 'Etapa Alterada no Kanban',
+      description: `Etapa alterada manualmente de "${prevLabel}" para "${newLabel}".`,
+      date: new Date().toISOString(),
+      author: currentUser?.name || 'Advogado Responsável',
+    };
+
+    setLeads((prev) =>
+      prev.map((lead) => {
+        if (lead.id === leadId) {
+          const updated = {
+            ...lead,
+            status: targetStatus,
+            updatedAt: new Date().toISOString(),
+            interactions: [moveEvent, ...(lead.interactions || [])],
+          };
+          if (selectedLead && selectedLead.id === lead.id) {
+            setSelectedLead(updated);
+          }
+          return updated;
+        }
+        return lead;
+      })
+    );
   };
 
   // Create new user inside CRM
@@ -598,17 +679,26 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
               </button>
             </div>
 
-            {/* Kanban Columns (Drag and Drop) */}
+            {/* Kanban Columns with Visual Drag and Drop */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 items-start">
               {KANBAN_COLUMNS.map((column) => {
                 const columnLeads = filteredLeads.filter((l) => l.status === column.id);
+                const isDragOverThis = draggedOverColumn === column.id;
 
                 return (
                   <div
                     key={column.id}
-                    onDragOver={handleDragOver}
-                    onDrop={() => handleDrop(column.id)}
-                    className={`bg-slate-900/90 rounded-xl border-t-4 ${column.color} border-slate-800 border p-3 flex flex-col min-h-[500px] shadow-lg`}
+                    onDragOver={(e) => handleDragOver(e, column.id)}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      handleDrop(column.id);
+                    }}
+                    className={`rounded-xl border-t-4 ${column.color} border p-3 flex flex-col min-h-[540px] transition-all duration-200 shadow-lg ${
+                      isDragOverThis
+                        ? 'bg-amber-950/40 border-amber-400 ring-2 ring-amber-400/50 scale-[1.01]'
+                        : 'bg-slate-900/90 border-slate-800'
+                    }`}
                   >
                     {/* Column Header */}
                     <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
@@ -621,61 +711,99 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
                     {/* Leads Cards */}
                     <div className="space-y-3 flex-1 overflow-y-auto">
                       {columnLeads.length === 0 ? (
-                        <div className="text-center py-10 text-[11px] text-slate-600 border border-dashed border-slate-800 rounded-lg">
-                          Arraste um card para cá
+                        <div className={`text-center py-12 text-[11px] border border-dashed rounded-xl transition ${
+                          isDragOverThis 
+                            ? 'border-amber-400 text-amber-300 bg-amber-500/10' 
+                            : 'border-slate-800 text-slate-500'
+                        }`}>
+                          {isDragOverThis ? 'Solte o lead aqui' : 'Arraste um lead para cá'}
                         </div>
                       ) : (
-                        columnLeads.map((lead) => (
-                          <div
-                            key={lead.id}
-                            draggable
-                            onDragStart={() => handleDragStart(lead.id)}
-                            className="bg-slate-950 p-3 rounded-lg border border-slate-800 hover:border-amber-500/50 transition cursor-grab active:cursor-grabbing shadow-md group"
-                          >
-                            <div className="flex items-center justify-between gap-1 mb-1.5">
-                              <span className="font-bold text-xs text-slate-100 group-hover:text-amber-400 transition">
-                                {lead.name}
-                              </span>
-                            </div>
+                        columnLeads.map((lead) => {
+                          const interactionCount = lead.interactions?.length || 0;
+                          const isBeingDragged = draggedLeadId === lead.id;
 
-                            <div className="text-[11px] text-amber-400/90 font-medium truncate mb-2">
-                              {lead.practiceArea}
-                            </div>
-
-                            <div className="space-y-1 text-[11px] text-slate-400">
-                              <div className="flex items-center gap-1.5">
-                                <Phone className="w-3 h-3 text-emerald-400" />
-                                <a
-                                  href={`https://wa.me/55${lead.phone.replace(/\D/g, '')}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="hover:text-emerald-400"
-                                >
-                                  {lead.phone}
-                                </a>
+                          return (
+                            <div
+                              key={lead.id}
+                              draggable
+                              onDragStart={(e) => handleDragStart(e, lead.id)}
+                              onClick={() => setSelectedLead(lead)}
+                              className={`bg-slate-950 p-3.5 rounded-xl border transition-all cursor-grab active:cursor-grabbing shadow-md group hover:border-amber-500/60 hover:shadow-amber-950/30 ${
+                                isBeingDragged
+                                  ? 'opacity-40 border-dashed border-amber-400 scale-95'
+                                  : 'border-slate-800'
+                              }`}
+                            >
+                              {/* Header: Name and Quick View Icon */}
+                              <div className="flex items-start justify-between gap-1 mb-1.5">
+                                <span className="font-bold text-xs text-slate-100 group-hover:text-amber-400 transition leading-snug">
+                                  {lead.name}
+                                </span>
+                                <span className="text-[10px] text-slate-500 group-hover:text-amber-400 transition shrink-0 ml-1">
+                                  Ver ➔
+                                </span>
                               </div>
-                              {lead.processNumber && (
-                                <div className="flex items-center gap-1.5 text-slate-300">
-                                  <FileText className="w-3 h-3 text-amber-400" />
-                                  <span className="truncate">{lead.processNumber}</span>
-                                </div>
-                              )}
-                              {lead.notes && (
-                                <p className="text-[10px] text-slate-500 line-clamp-2 italic pt-1 border-t border-slate-800/60">
-                                  "{lead.notes}"
-                                </p>
-                              )}
-                            </div>
 
-                            {/* Move shortcuts */}
-                            <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500">
-                              <span>Arraste para mover</span>
-                              <span className="text-amber-400/80">
-                                {new Date(lead.createdAt).toLocaleDateString('pt-BR')}
-                              </span>
+                              <div className="text-[11px] text-amber-400/90 font-medium truncate mb-2">
+                                {lead.practiceArea}
+                              </div>
+
+                              <div className="space-y-1.5 text-[11px] text-slate-400">
+                                <div className="flex items-center gap-1.5">
+                                  <Phone className="w-3 h-3 text-emerald-400 shrink-0" />
+                                  <a
+                                    href={`https://wa.me/55${lead.phone.replace(/\D/g, '')}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="hover:text-emerald-400 font-mono"
+                                  >
+                                    {lead.phone}
+                                  </a>
+                                </div>
+
+                                {lead.processNumber && (
+                                  <div className="flex items-center gap-1.5 text-slate-300">
+                                    <FileText className="w-3 h-3 text-amber-400 shrink-0" />
+                                    <span className="truncate font-mono">{lead.processNumber}</span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Interactions Badge & Agenda Preview */}
+                              <div className="mt-3 pt-2.5 border-t border-slate-800/80 space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <span className="inline-flex items-center gap-1 text-[10px] font-medium text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                                    <Clock className="w-3 h-3 text-amber-400" />
+                                    <span>{interactionCount} {interactionCount === 1 ? 'registro' : 'registros'} na agenda</span>
+                                  </span>
+                                </div>
+
+                                {/* Quick stage changer & drag hint */}
+                                <div className="flex items-center justify-between gap-1 text-[10px] text-slate-500 pt-1">
+                                  <span className="text-[9px] uppercase tracking-wider text-slate-500">Mover:</span>
+                                  <select
+                                    value={lead.status}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onChange={(e) => {
+                                      e.stopPropagation();
+                                      handleMoveLeadDirectly(lead.id, e.target.value as KanbanStatus);
+                                    }}
+                                    className="bg-slate-900 border border-slate-700/80 rounded px-1.5 py-0.5 text-[10px] text-slate-300 focus:outline-none focus:border-amber-400"
+                                  >
+                                    {KANBAN_COLUMNS.map((col) => (
+                                      <option key={col.id} value={col.id}>
+                                        {col.label.slice(0, 15)}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
+
                             </div>
-                          </div>
-                        ))
+                          );
+                        })
                       )}
                     </div>
                   </div>
@@ -1068,6 +1196,19 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
         )}
 
       </main>
+
+      {/* Client Life History & Agenda Modal */}
+      {selectedLead && (
+        <LeadDetailModal
+          lead={selectedLead}
+          currentUserName={currentUser.name}
+          onClose={() => setSelectedLead(null)}
+          onUpdateLead={(updated) => {
+            setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
+            setSelectedLead(updated);
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -6,6 +6,15 @@ export type KanbanStatus =
   | 'concluido' 
   | 'arquivado';
 
+export interface Interaction {
+  id: string;
+  type: 'whatsapp' | 'call' | 'meeting' | 'protocol' | 'hearing' | 'document' | 'internal';
+  title: string;
+  description: string;
+  date: string;
+  author: string;
+}
+
 export interface Lead {
   id: string;
   name: string;
@@ -18,6 +27,7 @@ export interface Lead {
   status: KanbanStatus;
   createdAt: string;
   updatedAt: string;
+  interactions?: Interaction[];
 }
 
 export interface UserAccount {

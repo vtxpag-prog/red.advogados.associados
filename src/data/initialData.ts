@@ -245,6 +245,24 @@ export const INITIAL_LEADS: Lead[] = [
     status: 'novo_lead',
     createdAt: '2026-11-06T10:15:00.000Z',
     updatedAt: '2026-11-06T10:15:00.000Z',
+    interactions: [
+      {
+        id: 'int-1-1',
+        type: 'whatsapp',
+        title: 'Primeiro Contato pelo Formulário do Site',
+        description: 'Cliente enviou solicitação pelo formulário online solicitando suporte urgente devido a notificação em PAD.',
+        date: '2026-11-06T10:15:00.000Z',
+        author: 'Sistema RED',
+      },
+      {
+        id: 'int-1-2',
+        type: 'call',
+        title: 'Contato Telefônico Preliminar',
+        description: 'Conversa inicial com Dr. Reinaldo. Esclarecido que o prazo de defesa vence em 10 dias úteis. Solicitada cópia integral do caderno funcional.',
+        date: '2026-11-06T11:30:00.000Z',
+        author: 'Dr. Reinaldo Eustáquio Dias',
+      },
+    ],
   },
   {
     id: 'lead-2',
@@ -257,6 +275,24 @@ export const INITIAL_LEADS: Lead[] = [
     status: 'em_atendimento',
     createdAt: '2026-11-05T14:20:00.000Z',
     updatedAt: '2026-11-06T09:00:00.000Z',
+    interactions: [
+      {
+        id: 'int-2-1',
+        type: 'whatsapp',
+        title: 'Mensagem de WhatsApp',
+        description: 'Cliente enviou arquivo do edital e minutas prévias de cessão de direitos de imagem e voz para o documentário.',
+        date: '2026-11-05T14:25:00.000Z',
+        author: 'Dra. Paula da Silva Mattos',
+      },
+      {
+        id: 'int-2-2',
+        type: 'meeting',
+        title: 'Reunião Online de Alinhamento',
+        description: 'Videoconferência de 45 minutos. Explicado o plano de salvaguarda de direitos autorais e cronograma de liberação de recursos do edital.',
+        date: '2026-11-06T09:00:00.000Z',
+        author: 'Dra. Paula da Silva Mattos',
+      },
+    ],
   },
   {
     id: 'lead-3',
@@ -269,6 +305,24 @@ export const INITIAL_LEADS: Lead[] = [
     status: 'agendado',
     createdAt: '2026-11-04T11:00:00.000Z',
     updatedAt: '2026-11-05T16:30:00.000Z',
+    interactions: [
+      {
+        id: 'int-3-1',
+        type: 'call',
+        title: 'Alinhamento com Diretoria de Novos Negócios',
+        description: 'Primeira conversa sobre termo de referência e edital de consulta pública de PPP.',
+        date: '2026-11-04T11:30:00.000Z',
+        author: 'Dr. Reinaldo Eustáquio Dias',
+      },
+      {
+        id: 'int-3-2',
+        type: 'meeting',
+        title: 'Reunião Presencial Agendada',
+        description: 'Agendada reunião presencial na sede da RED Advogados (Av. do Contorno, 7174 - Sala 09) para análise conjunta da viabilidade econômico-jurídica.',
+        date: '2026-11-05T16:30:00.000Z',
+        author: 'Dr. Reinaldo Eustáquio Dias',
+      },
+    ],
   },
   {
     id: 'lead-4',
@@ -282,6 +336,32 @@ export const INITIAL_LEADS: Lead[] = [
     status: 'processo_andamento',
     createdAt: '2026-10-28T08:45:00.000Z',
     updatedAt: '2026-11-04T14:10:00.000Z',
+    interactions: [
+      {
+        id: 'int-4-1',
+        type: 'meeting',
+        title: 'Consulta Inicial e Assinatura de Procuração',
+        description: 'Assinatura eletrônica do contrato de honorários e procuração ad judicia.',
+        date: '2026-10-28T10:00:00.000Z',
+        author: 'Dr. Reinaldo Eustáquio Dias',
+      },
+      {
+        id: 'int-4-2',
+        type: 'protocol',
+        title: 'Distribuição da Ação Ordinária',
+        description: 'Petição inicial distribuída perante a 14ª Vara Cível de Belo Horizonte. Processo nº 5001289-44.2024.8.13.0024.',
+        date: '2026-10-31T15:20:00.000Z',
+        author: 'Dr. Reinaldo Eustáquio Dias',
+      },
+      {
+        id: 'int-4-3',
+        type: 'whatsapp',
+        title: 'Envio de Atualização Processual à Cliente',
+        description: 'Informada a expedição do mandado de citação da construtora ré. Cliente orientada sobre prazos.',
+        date: '2026-11-04T14:10:00.000Z',
+        author: 'Dra. Paula da Silva Mattos',
+      },
+    ],
   },
   {
     id: 'lead-5',
@@ -294,6 +374,32 @@ export const INITIAL_LEADS: Lead[] = [
     status: 'concluido',
     createdAt: '2026-10-15T15:30:00.000Z',
     updatedAt: '2026-11-02T11:00:00.000Z',
+    interactions: [
+      {
+        id: 'int-5-1',
+        type: 'meeting',
+        title: 'Reunião Diagnóstica de Acordo de Sócios',
+        description: 'Mapeamento das cláusulas de vesting, tag along e drag along para os 3 sócios fundadores.',
+        date: '2026-10-16T14:00:00.000Z',
+        author: 'Dr. Reinaldo Eustáquio Dias',
+      },
+      {
+        id: 'int-5-2',
+        type: 'document',
+        title: 'Entrega de Minutas e Registro na JUCEMG',
+        description: 'Alteração contratual registrada com êxito na Junta Comercial de Minas Gerais.',
+        date: '2026-10-30T16:00:00.000Z',
+        author: 'Dr. Reinaldo Eustáquio Dias',
+      },
+      {
+        id: 'int-5-3',
+        type: 'whatsapp',
+        title: 'Encerramento com Sucesso e Termo de Entrega',
+        description: 'Envio dos documentos finais assinados e validação da satisfação plena da diretoria.',
+        date: '2026-11-02T11:00:00.000Z',
+        author: 'Dr. Reinaldo Eustáquio Dias',
+      },
+    ],
   },
 ];
 
