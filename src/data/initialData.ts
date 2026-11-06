@@ -33,6 +33,7 @@ export const LAWYERS = [
     mainAreas: 'Direito Administrativo, Parcerias Público-Privadas (PPP), Direito Cível e Empresarial',
     experienceYears: 'Mais de 18 anos de atuação (desde 2007)',
     photoUrl: '/assets/aistudio/foto_perfil_reinaldo_site-essa_870179fe.jpg',
+    aboutPhotoUrl: '/assets/aistudio/foto_perfil_reinaldo_site-nesta-foto-o-dr-reinaldo-esta-voltado-para-a-esque_36ea391e.jpg',
     education: [
       'Bacharelado em Direito — Pontifícia Universidade Católica de Minas Gerais (PUC Minas, 2002–2007)',
       'Pós-Graduação em Direito Processual Aplicado — PUC Minas (2010–2011)',

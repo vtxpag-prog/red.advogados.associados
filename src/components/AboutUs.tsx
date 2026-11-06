@@ -38,9 +38,12 @@ export const AboutUs: React.FC = () => {
           <div className="lg:col-span-7 bg-slate-950/80 rounded-2xl border border-amber-500/30 overflow-hidden shadow-xl flex flex-col sm:flex-row">
             <div className="sm:w-5/12 relative h-72 sm:h-auto min-h-[300px] overflow-hidden bg-slate-900 shrink-0">
               <img
-                src={LAWYERS[0].photoUrl}
+                src={LAWYERS[0].aboutPhotoUrl || '/assets/aistudio/foto_perfil_reinaldo_site-nesta-foto-o-dr-reinaldo-esta-voltado-para-a-esque_36ea391e.jpg'}
                 alt={LAWYERS[0].name}
                 className="w-full h-full object-cover object-top hover:scale-105 transition duration-500"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/assets/aistudio/foto_perfil_reinaldo_site-nesta-foto-o-dr-reinaldo-esta-voltado-para-a-esque_36ea391e.jpg';
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-slate-950/90 via-slate-950/20 to-transparent"></div>
               <div className="absolute bottom-3 left-3 bg-amber-500 text-slate-950 text-[11px] font-bold px-2.5 py-1 rounded shadow">

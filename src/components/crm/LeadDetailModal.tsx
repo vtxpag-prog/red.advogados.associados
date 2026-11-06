@@ -43,13 +43,13 @@ const KANBAN_OPTIONS: { id: KanbanStatus; label: string }[] = [
 ];
 
 const INTERACTION_TYPES = [
-  { id: 'whatsapp', label: 'Mensagem de WhatsApp', icon: MessageSquare, color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' },
-  { id: 'call', label: 'Ligação Telefônica', icon: Phone, color: 'text-blue-400 bg-blue-500/10 border-blue-500/30' },
-  { id: 'meeting', label: 'Reunião Presencial / Online', icon: Users, color: 'text-amber-400 bg-amber-500/10 border-amber-500/30' },
-  { id: 'protocol', label: 'Protocolo Judicial / Publicação', icon: Scale, color: 'text-purple-400 bg-purple-500/10 border-purple-500/30' },
-  { id: 'hearing', label: 'Audiência / Despacho com Juiz', icon: Building, color: 'text-rose-400 bg-rose-500/10 border-rose-500/30' },
-  { id: 'document', label: 'Envio / Análise de Documentos', icon: FileCheck, color: 'text-teal-400 bg-teal-500/10 border-teal-500/30' },
-  { id: 'internal', label: 'Anotação Interna da Equipe', icon: FileText, color: 'text-slate-300 bg-slate-800 border-slate-700' },
+  { id: 'whatsapp', label: 'Mensagem de WhatsApp', icon: MessageSquare, color: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
+  { id: 'call', label: 'Ligação Telefônica', icon: Phone, color: 'text-blue-700 bg-blue-50 border-blue-200' },
+  { id: 'meeting', label: 'Reunião Presencial / Online', icon: Users, color: 'text-amber-800 bg-amber-50 border-amber-200' },
+  { id: 'protocol', label: 'Protocolo Judicial / Publicação', icon: Scale, color: 'text-purple-700 bg-purple-50 border-purple-200' },
+  { id: 'hearing', label: 'Audiência / Despacho com Juiz', icon: Building, color: 'text-rose-700 bg-rose-50 border-rose-200' },
+  { id: 'document', label: 'Envio / Análise de Documentos', icon: FileCheck, color: 'text-teal-700 bg-teal-50 border-teal-200' },
+  { id: 'internal', label: 'Anotação Interna da Equipe', icon: FileText, color: 'text-slate-700 bg-slate-100 border-slate-300' },
 ];
 
 export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
@@ -220,7 +220,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
             .section { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 25px; }
             .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px; }
             .item strong { color: #0f172a; }
-            .timeline-item { border-left: 2px solid #f59e0b; padding-left: 15px; margin-bottom: 20px; position: relative; }
+            .timeline-item { border-left: 2px solid #d97706; padding-left: 15px; margin-bottom: 20px; position: relative; }
             .timeline-item::before { content: ""; width: 8px; height: 8px; background: #b45309; border-radius: 50%; position: absolute; left: -5px; top: 4px; }
             .timeline-date { font-size: 11px; font-weight: bold; color: #b45309; }
             .timeline-title { font-size: 14px; font-weight: bold; color: #0f172a; margin: 2px 0 6px 0; }
@@ -292,33 +292,33 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-700 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+      <div className="bg-white border border-slate-200 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in duration-200">
         
-        {/* Modal Top Header */}
-        <div className="bg-slate-950 border-b border-slate-800 p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        {/* Modal Top Header (Light Clean Theme) */}
+        <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 font-serif font-bold text-lg">
+            <div className="w-12 h-12 rounded-xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0 font-serif font-bold text-lg shadow-xs">
               {lead.name.slice(0, 2).toUpperCase()}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-serif text-xl sm:text-2xl font-bold text-white leading-tight">
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                   {lead.name}
                 </h3>
               </div>
-              <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400 mt-1">
-                <span className="text-amber-400 font-medium">{lead.practiceArea}</span>
+              <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
+                <span className="text-amber-700 font-semibold">{lead.practiceArea}</span>
                 {lead.processNumber && (
                   <>
                     <span>•</span>
-                    <span className="text-slate-300 font-mono bg-slate-800 px-2 py-0.5 rounded">
+                    <span className="text-slate-700 font-mono bg-slate-200/80 px-2 py-0.5 rounded border border-slate-300">
                       Proc: {lead.processNumber}
                     </span>
                   </>
                 )}
                 <span>•</span>
-                <span>Desde {new Date(lead.createdAt).toLocaleDateString('pt-BR')}</span>
+                <span>Cadastrado em {new Date(lead.createdAt).toLocaleDateString('pt-BR')}</span>
               </div>
             </div>
           </div>
@@ -329,7 +329,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
             {/* Download Report Button */}
             <button
               onClick={handleDownloadReport}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-slate-950 px-3 py-2 rounded-lg transition shadow-md cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-semibold bg-amber-600 hover:bg-amber-500 text-white px-3 py-2 rounded-lg transition shadow-xs cursor-pointer"
               title="Baixar arquivo TXT com todo o histórico do cliente para envio"
             >
               <Download className="w-3.5 h-3.5" />
@@ -339,27 +339,27 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
             {/* Print / PDF Button */}
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-lg border border-slate-700 transition"
+              className="flex items-center gap-1.5 text-xs text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 px-3 py-2 rounded-lg border border-slate-300 transition shadow-xs"
               title="Imprimir ou Salvar em PDF"
             >
-              <Printer className="w-3.5 h-3.5" />
+              <Printer className="w-3.5 h-3.5 text-slate-500" />
               <span className="hidden sm:inline">Imprimir / PDF</span>
             </button>
 
             {/* Copy Button */}
             <button
               onClick={handleCopyReport}
-              className="flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-lg border border-slate-700 transition"
+              className="flex items-center gap-1.5 text-xs text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 px-3 py-2 rounded-lg border border-slate-300 transition shadow-xs"
               title="Copiar texto para colar em WhatsApp ou e-mail"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-500" />}
               <span className="hidden sm:inline">{copied ? 'Copiado!' : 'Copiar'}</span>
             </button>
 
             {/* Close */}
             <button
               onClick={onClose}
-              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition ml-2"
+              className="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition ml-2"
               title="Fechar"
             >
               <X className="w-5 h-5" />
@@ -368,41 +368,41 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
         </div>
 
         {/* Client Contact & Kanban Stage Bar */}
-        <div className="bg-slate-950/70 border-b border-slate-800/80 px-6 py-3 flex flex-wrap items-center justify-between gap-4 text-xs">
+        <div className="bg-slate-100/70 border-b border-slate-200 px-6 py-3 flex flex-wrap items-center justify-between gap-4 text-xs">
           
           {/* Contact Direct Links */}
-          <div className="flex flex-wrap items-center gap-4 text-slate-300">
+          <div className="flex flex-wrap items-center gap-4 text-slate-700">
             <div className="flex items-center gap-1.5">
-              <Phone className="w-3.5 h-3.5 text-emerald-400" />
+              <Phone className="w-3.5 h-3.5 text-emerald-600" />
               <a
                 href={`https://wa.me/55${lead.phone.replace(/\D/g, '')}?text=Ol%C3%A1%20${encodeURIComponent(lead.name)}%2C%20aqui%20%C3%A9%20da%20RED%20Advogados%20Associados.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-emerald-400 font-medium flex items-center gap-1"
+                className="hover:text-emerald-700 font-medium flex items-center gap-1 font-mono"
               >
                 <span>{lead.phone}</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
+                <ExternalLink className="w-3 h-3 text-slate-400" />
               </a>
             </div>
 
             <div className="flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-blue-400" />
+              <Mail className="w-3.5 h-3.5 text-blue-600" />
               <span>{lead.email}</span>
             </div>
 
             <div className="flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-amber-400" />
-              <span>CPF: <strong className="font-mono">{lead.cpf}</strong></span>
+              <User className="w-3.5 h-3.5 text-amber-700" />
+              <span>CPF: <strong className="font-mono text-slate-900">{lead.cpf}</strong></span>
             </div>
           </div>
 
           {/* Change Kanban Stage Directly */}
           <div className="flex items-center gap-2">
-            <span className="text-slate-400 font-medium">Etapa no Kanban:</span>
+            <span className="text-slate-600 font-medium">Etapa no Kanban:</span>
             <select
               value={status}
               onChange={(e) => handleStatusChange(e.target.value as KanbanStatus)}
-              className="bg-slate-900 border border-amber-500/40 rounded-lg px-3 py-1.5 text-xs text-amber-300 font-semibold focus:outline-none focus:border-amber-400"
+              className="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 font-semibold focus:outline-none focus:border-amber-500 shadow-xs"
             >
               {KANBAN_OPTIONS.map((opt) => (
                 <option key={opt.id} value={opt.id}>
@@ -415,23 +415,23 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 bg-white text-slate-800">
           
           {/* Lead Original Notes */}
           {lead.notes && (
-            <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 flex items-start gap-2.5">
-              <FileText className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div className="bg-amber-50/70 p-3.5 rounded-xl border border-amber-200 text-xs text-slate-800 flex items-start gap-2.5">
+              <FileText className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
               <div>
-                <span className="font-bold text-amber-400 block mb-0.5">Demanda Inicial Registrada:</span>
+                <span className="font-bold text-amber-900 block mb-0.5">Demanda Inicial Registrada:</span>
                 <span>{lead.notes}</span>
               </div>
             </div>
           )}
 
           {/* Form to Register New Interaction in the Client's Life History */}
-          <div className="bg-slate-950 rounded-xl border border-slate-800 p-4 sm:p-5">
-            <h4 className="font-serif text-sm font-bold text-white mb-3 flex items-center gap-2 text-amber-300">
-              <Plus className="w-4 h-4 text-amber-400" />
+          <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 sm:p-5">
+            <h4 className="font-serif text-sm font-bold text-slate-900 mb-3 flex items-center gap-2 text-amber-800">
+              <Plus className="w-4 h-4 text-amber-600" />
               Registrar Nova Interação / Evento na Agenda do Processo
             </h4>
 
@@ -440,13 +440,13 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
                 
                 {/* Tipo de Interação */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
                     Tipo de Interação *
                   </label>
                   <select
                     value={interactionType}
                     onChange={(e) => setInteractionType(e.target.value as Interaction['type'])}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-500"
+                    className="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 shadow-xs"
                   >
                     {INTERACTION_TYPES.map((t) => (
                       <option key={t.id} value={t.id}>
@@ -458,7 +458,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
 
                 {/* Título / Assunto */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
                     Título / Assunto
                   </label>
                   <input
@@ -466,13 +466,13 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Ex: Reunião sobre prazos, Despacho, etc."
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-500"
+                    className="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 shadow-xs"
                   />
                 </div>
 
                 {/* Responsável */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
                     Advogado Responsável
                   </label>
                   <input
@@ -480,7 +480,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
                     value={author}
                     onChange={(e) => setAuthor(e.target.value)}
                     placeholder="Nome do advogado"
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-500"
+                    className="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 shadow-xs"
                   />
                 </div>
 
@@ -488,7 +488,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
 
               {/* Descrição Detalhada */}
               <div>
-                <label className="block text-[11px] font-semibold text-slate-400 mb-1">
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
                   Resumo da Interação / Anotação da Vida do Cliente *
                 </label>
                 <textarea
@@ -497,7 +497,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Descreva o que foi tratado, decisões tomadas, documentos recebidos ou próximos prazos combinados..."
-                  className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-amber-500 resize-none"
+                  className="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500 resize-none shadow-xs"
                 />
               </div>
 
@@ -507,7 +507,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
                 </span>
                 <button
                   type="submit"
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs transition flex items-center gap-1.5 cursor-pointer shadow-md"
+                  className="bg-amber-600 hover:bg-amber-500 text-white font-bold px-4 py-2 rounded-lg text-xs transition flex items-center gap-1.5 cursor-pointer shadow-xs"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Gravar no Histórico</span>
@@ -518,22 +518,22 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
 
           {/* Timeline of Recorded Interactions */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-              <h4 className="font-serif text-sm font-bold text-white flex items-center gap-2">
-                <Clock className="w-4 h-4 text-amber-400" />
+            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+              <h4 className="font-serif text-sm font-bold text-slate-900 flex items-center gap-2">
+                <Clock className="w-4 h-4 text-amber-600" />
                 Histórico de Acompanhamento do Cliente ({interactions.length} registros)
               </h4>
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-slate-500">
                 Ordem cronológica decrescente
               </span>
             </div>
 
             {interactions.length === 0 ? (
-              <div className="text-center py-8 text-xs text-slate-500 border border-dashed border-slate-800 rounded-xl">
+              <div className="text-center py-8 text-xs text-slate-500 border border-dashed border-slate-300 rounded-xl">
                 Nenhuma interação registrada ainda. Utilize o formulário acima para anotar telefonemas, reuniões ou protocolos.
               </div>
             ) : (
-              <div className="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-800">
+              <div className="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
                 {interactions.map((int) => {
                   const typeDef = INTERACTION_TYPES.find((t) => t.id === int.type) || INTERACTION_TYPES[0];
                   const Icon = typeDef.icon;
@@ -542,39 +542,39 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
                   return (
                     <div key={int.id} className="relative group">
                       {/* Timeline Dot with Icon */}
-                      <div className="absolute -left-6 top-1.5 w-4 h-4 rounded-full bg-slate-900 border-2 border-amber-500 flex items-center justify-center">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                      <div className="absolute -left-6 top-2 w-4 h-4 rounded-full bg-white border-2 border-amber-600 flex items-center justify-center shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
                       </div>
 
                       {/* Content Card */}
-                      <div className="bg-slate-950 rounded-xl p-4 border border-slate-800/80 hover:border-slate-700 transition shadow-sm space-y-2">
+                      <div className="bg-white rounded-xl p-4 border border-slate-200 hover:border-slate-300 transition shadow-xs space-y-2">
                         
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <div className="flex items-center gap-2">
-                            <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${typeDef.color}`}>
+                            <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${typeDef.color}`}>
                               <Icon className="w-3 h-3" />
                               {typeDef.label}
                             </span>
-                            <span className="font-bold text-xs text-white">
+                            <span className="font-bold text-xs text-slate-900">
                               {int.title}
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-1.5 text-[11px] text-amber-400/90 font-mono">
-                            <Clock className="w-3 h-3 text-slate-500" />
+                          <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-mono">
+                            <Clock className="w-3 h-3 text-slate-400" />
                             <span>
                               {intDate.toLocaleDateString('pt-BR')} às {intDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                             </span>
                           </div>
                         </div>
 
-                        <p className="text-xs text-slate-200 whitespace-pre-line leading-relaxed">
+                        <p className="text-xs text-slate-700 whitespace-pre-line leading-relaxed">
                           {int.description}
                         </p>
 
-                        <div className="pt-2 border-t border-slate-800/60 flex items-center justify-between text-[10px] text-slate-400">
-                          <span>Responsável pelo registro: <strong className="text-slate-300">{int.author}</strong></span>
-                          <span className="text-slate-600">ID: {int.id}</span>
+                        <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
+                          <span>Registrado por: <strong className="text-slate-800">{int.author}</strong></span>
+                          <span className="text-slate-400">ID: {int.id}</span>
                         </div>
                       </div>
                     </div>
@@ -588,23 +588,23 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
         </div>
 
         {/* Modal Bottom Bar */}
-        <div className="bg-slate-950 border-t border-slate-800 p-4 px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-          <div className="flex items-center gap-2 text-slate-400">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Dados criptografados e armazenados com sigilo profissional (OAB/MG).</span>
+        <div className="bg-slate-50 border-t border-slate-200 p-4 px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <span>Dados protegidos pelo sigilo profissional advocatício (OAB/MG).</span>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={handleDownloadReport}
-              className="text-amber-400 hover:text-amber-300 font-semibold underline flex items-center gap-1"
+              className="text-amber-700 hover:text-amber-800 font-semibold underline flex items-center gap-1"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Exportar Histórico Completo (.TXT)</span>
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition"
+              className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium rounded-lg transition"
             >
               Fechar
             </button>
