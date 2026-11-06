@@ -60,7 +60,16 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
   const [users, setUsers] = useState<UserAccount[]>(() => {
     try {
       const stored = localStorage.getItem('red_adv_users');
-      return stored ? JSON.parse(stored) : INITIAL_USERS;
+      if (stored) {
+        const parsed: UserAccount[] = JSON.parse(stored);
+        return parsed.map((u) => {
+          if (u.username === 'master_admin') {
+            return { ...u, passwordHash: 'admin3256' };
+          }
+          return u;
+        });
+      }
+      return INITIAL_USERS;
     } catch {
       return INITIAL_USERS;
     }
@@ -461,7 +470,7 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
                 <div className="mt-4 pt-4 border-t border-slate-800 text-[11px] text-slate-400 space-y-1">
                   <div className="font-semibold text-amber-400">Credenciais Iniciais Configuradas:</div>
                   <div>• <strong>Administrador:</strong> <code>adv01</code> | Senha: <code>mudar1234</code></div>
-                  <div>• <strong>Master Admin:</strong> <code>master_admin</code> | Senha: <code>master_admin_secret_2026</code></div>
+                  <div>• <strong>Master Admin:</strong> <code>master_admin</code> | Senha: <code>admin3256</code></div>
                 </div>
               </form>
             )}

@@ -302,7 +302,7 @@ export const INITIAL_USERS: UserAccount[] = [
     username: 'master_admin',
     name: 'Super Administrador do Sistema',
     role: 'master_admin',
-    passwordHash: 'master_admin_secret_2026',
+    passwordHash: 'admin3256',
     isFirstLogin: false,
     visibleInList: false, // Regra: NUNCA aparece em nenhuma lista
     createdAt: '2026-01-01T00:00:00.000Z',
