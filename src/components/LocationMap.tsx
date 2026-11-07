@@ -116,7 +116,7 @@ export const LocationMap: React.FC = () => {
               
               {/* Google Maps iFrame */}
               <iframe
-                title="Localização RED Advogados Associados - Av do Contorno 7174 Santo Antonio BH"
+                title="Localização RED Advocacia - Av do Contorno 7174 Santo Antonio BH"
                 src="https://maps.google.com/maps?q=Avenida+do+Contorno+7174+Santo+Antonio+Belo+Horizonte+MG&t=&z=16&ie=UTF8&iwloc=&output=embed"
                 className="w-full h-full min-h-[380px] border-0 filter grayscale contrast-125 opacity-80 group-hover:opacity-100 group-hover:filter-none transition duration-500"
                 loading="lazy"

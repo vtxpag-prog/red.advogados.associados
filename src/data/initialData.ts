@@ -1,7 +1,7 @@
 import { Lead, PracticeAreaItem, WhatsAppScript, UserAccount } from '../types';
 
 export const OFFICE_DATA = {
-  name: 'RED Advogados Associados',
+  name: 'RED Advocacia',
   corporateName: 'Reinaldo Dias Sociedade Individual de Advocacia',
   cnpj: 'Em regularização cadastral',
   phone: '(31) 98334-7116',
@@ -166,7 +166,7 @@ export const WHATSAPP_SCRIPTS: WhatsAppScript[] = [
     sender: 'bot',
     timing: 'Imediato (em até 3 minutos)',
     iconName: 'MessageSquare',
-    message: 'Olá! Aqui é da RED Advogados Associados. Seja muito bem-vindo(a). Entendemos que quando alguém procura orientação jurídica, busca principalmente tranquilidade e segurança. Para que possamos te ouvir com total atenção, nos conte brevemente: qual situação você precisa resolver hoje?',
+    message: 'Olá! Aqui é da RED Advocacia. Seja muito bem-vindo(a). Entendemos que quando alguém procura orientação jurídica, busca principalmente tranquilidade e segurança. Para que possamos te ouvir com total atenção, nos conte brevemente: qual situação você precisa resolver hoje?',
   },
   {
     id: 2,
@@ -220,7 +220,7 @@ export const WHATSAPP_SCRIPTS: WhatsAppScript[] = [
     sender: 'bot',
     timing: '3 dias após conclusão',
     iconName: 'Star',
-    message: 'Sua opinião é fundamental para nós. Se você sentiu que foi bem acolhido(a) e tratado com respeito e clareza pela RED Advogados Associados, poderia deixar uma breve avaliação de 1 minuto no nosso Google? Isso ajuda outras pessoas a encontrarem apoio seguro: [Link de Avaliação Google]',
+    message: 'Sua opinião é fundamental para nós. Se você sentiu que foi bem acolhido(a) e tratado com respeito e clareza pela RED Advocacia, poderia deixar uma breve avaliação de 1 minuto no nosso Google? Isso ajuda outras pessoas a encontrarem apoio seguro: [Link de Avaliação Google]',
   },
   {
     id: 8,
@@ -319,7 +319,7 @@ export const INITIAL_LEADS: Lead[] = [
         id: 'int-3-2',
         type: 'meeting',
         title: 'Reunião Presencial Agendada',
-        description: 'Agendada reunião presencial na sede da RED Advogados (Av. do Contorno, 7174 - Sala 09) para análise conjunta da viabilidade econômico-jurídica.',
+        description: 'Agendada reunião presencial na sede da RED Advocacia (Av. do Contorno, 7174 - Sala 09) para análise conjunta da viabilidade econômico-jurídica.',
         date: '2026-11-05T16:30:00.000Z',
         author: 'Dr. Reinaldo Eustáquio Dias',
       },

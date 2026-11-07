@@ -165,13 +165,13 @@ export const WhatsAppSimulator: React.FC = () => {
                     <div className="w-10 h-10 rounded-full overflow-hidden bg-amber-600 border border-amber-400/50 shrink-0">
                       <img
                         src="/assets/aistudio/foto_perfil_reinaldo_site-essa_870179fe.jpg"
-                        alt="RED Advogados"
+                        alt="RED Advocacia"
                         className="w-full h-full object-cover"
                       />
                     </div>
                     <div>
                       <div className="font-semibold text-sm leading-tight flex items-center gap-1.5">
-                        <span>RED Advogados Associados</span>
+                        <span>RED Advocacia</span>
                         <Shield className="w-3 h-3 text-emerald-400 fill-emerald-400" />
                       </div>
                       <div className="text-[11px] text-emerald-400 font-light flex items-center gap-1">

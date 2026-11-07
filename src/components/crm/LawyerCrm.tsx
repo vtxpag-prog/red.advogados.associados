@@ -583,7 +583,7 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
               RED
             </div>
             <div>
-              <span className="font-bold text-sm text-slate-900 block leading-tight">CRM RED Advogados</span>
+              <span className="font-bold text-sm text-slate-900 block leading-tight">CRM RED Advocacia</span>
               <span className="text-[11px] text-slate-500">
                 Logado como: <strong className="text-slate-800">{currentUser.name}</strong> ({currentUser.role === 'master_admin' ? 'Master Admin' : 'Administrador'})
               </span>

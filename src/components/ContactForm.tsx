@@ -135,7 +135,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ initialArea, onLeadAdd
                 Mensagem Recebida com Sucesso!
               </h3>
               <p className="text-sm sm:text-base text-slate-300 max-w-lg mx-auto leading-relaxed">
-                Olá, <strong>{name}</strong>. Seus dados foram salvos no nosso sistema CRM e encaminhados diretamente para a equipe jurídica da RED Advogados Associados. Entraremos em contato com você pelo WhatsApp em instantes.
+                Olá, <strong>{name}</strong>. Seus dados foram salvos no nosso sistema CRM e encaminhados diretamente para a equipe jurídica da RED Advocacia. Entraremos em contato com você pelo WhatsApp em instantes.
               </p>
               
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">

@@ -110,7 +110,7 @@ export const PracticeAreas: React.FC<PracticeAreasProps> = ({ onSelectAreaForCon
               {/* How We Act */}
               <div className="bg-slate-950/70 p-4 rounded-xl border border-slate-800/80">
                 <span className="text-xs uppercase tracking-wider text-amber-400 font-bold block mb-1">
-                  Como a RED Advogados Atua:
+                  Como a RED Advocacia Atua:
                 </span>
                 <p className="text-sm text-slate-200 leading-relaxed">
                   {selectedArea.howWeHelp}

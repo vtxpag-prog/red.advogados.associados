@@ -143,7 +143,7 @@ export const AboutUs: React.FC = () => {
         <div className="mt-8">
           <div className="text-center mb-8">
             <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white">
-              Por que a <span className="text-amber-400">RED Advogados</span> é a escolha mais segura?
+              Por que a <span className="text-amber-400">RED Advocacia</span> é a escolha mais segura?
             </h3>
             <p className="text-sm sm:text-base text-slate-400 mt-2">
               A diferença entre ser apenas mais um número em uma grande banca e ter profissionais seniores dedicados ao seu lado.
@@ -164,7 +164,7 @@ export const AboutUs: React.FC = () => {
                   <th className="py-4 px-6 text-emerald-300 bg-emerald-950/30 w-3/8 border-l border-emerald-900/40">
                     <div className="flex items-center gap-1.5">
                       <CheckCircle className="w-4 h-4 text-emerald-400" />
-                      Nosso Escritório (RED Advogados)
+                      Nosso Escritório (RED Advocacia)
                     </div>
                   </th>
                 </tr>

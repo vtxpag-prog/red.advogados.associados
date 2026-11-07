@@ -1,6 +1,6 @@
 {
-  "name": "RED Advogados Associados",
-  "description": "Presença digital, portal de atendimento humanizado e sistema de gestão para RED Advogados Associados.",
+  "name": "RED Advocacia",
+  "description": "Presença digital, portal de atendimento humanizado e sistema de gestão para RED Advocacia.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

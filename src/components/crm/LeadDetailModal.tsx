@@ -127,7 +127,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
 
     let text = `========================================================\n`;
     text += `   RELATÓRIO DE HISTÓRICO E ACOMPANHAMENTO PROCESSUAL   \n`;
-    text += `             RED ADVOGADOS ASSOCIADOS                   \n`;
+    text += `             RED ADVOCACIA                   \n`;
     text += `      Reinaldo Dias Sociedade Individual de Advocacia    \n`;
     text += `========================================================\n\n`;
     text += `EMISSÃO DO RELATÓRIO: ${formattedDate}\n`;
@@ -232,7 +232,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
         <body>
           <div class="header">
             <div>
-              <h1 class="title">RED ADVOGADOS ASSOCIADOS</h1>
+              <h1 class="title">RED ADVOCACIA</h1>
               <div class="sub">Reinaldo Dias Sociedade Individual de Advocacia • OAB/MG nº 111.989 • OAB/MG nº 196.128</div>
               <div class="sub">Av. do Contorno, 7174 — Sala 09, Santo Antônio, Belo Horizonte/MG • Tel: (31) 98334-7116</div>
             </div>
@@ -277,7 +277,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
           }
 
           <div class="footer">
-            Documento de acompanhamento processual de caráter sigiloso (Art. 7º, II da Lei 8.906/94). Gerado eletronicamente pelo CRM da RED Advogados Associados.
+            Documento de acompanhamento processual de caráter sigiloso (Art. 7º, II da Lei 8.906/94). Gerado eletronicamente pelo CRM da RED Advocacia.
           </div>
         </body>
       </html>
@@ -375,7 +375,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
             <div className="flex items-center gap-1.5">
               <Phone className="w-3.5 h-3.5 text-emerald-600" />
               <a
-                href={`https://wa.me/55${lead.phone.replace(/\D/g, '')}?text=Ol%C3%A1%20${encodeURIComponent(lead.name)}%2C%20aqui%20%C3%A9%20da%20RED%20Advogados%20Associados.`}
+                href={`https://wa.me/55${lead.phone.replace(/\D/g, '')}?text=Ol%C3%A1%20${encodeURIComponent(lead.name)}%2C%20aqui%20%C3%A9%20da%20RED%20Advocacia.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-emerald-700 font-medium flex items-center gap-1 font-mono"

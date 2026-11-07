@@ -61,7 +61,7 @@ export const HowItWorksAndPricing: React.FC = () => {
             Como Funciona e <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-200">Valores Transparentes</span>
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-300">
-            O medo de não saber quanto vai custar ou o que vai acontecer paralisa muita gente. Na RED Advogados, você sabe tudo antes de tomar qualquer decisão.
+            O medo de não saber quanto vai custar ou o que vai acontecer paralisa muita gente. Na RED Advocacia, você sabe tudo antes de tomar qualquer decisão.
           </p>
         </div>
 

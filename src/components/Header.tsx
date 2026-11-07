@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCrm, onOpenContact }) => {
           </div>
           <div className="flex flex-col">
             <span className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-white group-hover:text-amber-300 transition">
-              RED Advogados
+              RED Advocacia
             </span>
             <span className="text-[11px] uppercase tracking-widest text-amber-400/90 font-medium">
               Advocacia & Assessoria Estratégica
