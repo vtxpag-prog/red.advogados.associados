@@ -3,7 +3,8 @@ import { Lead, PracticeAreaItem, WhatsAppScript, UserAccount } from '../types';
 export const OFFICE_DATA = {
   name: 'RED Advocacia',
   corporateName: 'Reinaldo Dias Sociedade Individual de Advocacia',
-  cnpj: 'Em regularização cadastral',
+  cnpj: '48.136.764/0001-35',
+  legalNameAndCnpj: 'Reinaldo Dias Sociedade Individual de Advocacia - 48.136.764/0001-35',
   phone: '(31) 98334-7116',
   phoneRaw: '5531983347116',
   email: 'reinaldodias.advogado@gmail.com',

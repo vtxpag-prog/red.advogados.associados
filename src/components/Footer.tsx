@@ -28,14 +28,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenCrm }) => {
               <img
                 src="/assets/aistudio/emblema_RED_advocacia_v2.png"
                 alt="Emblema RED Advocacia"
-                className="w-11 h-11 sm:w-12 sm:h-12 object-contain drop-shadow-md shrink-0"
+                className="w-12 h-12 object-contain drop-shadow-md shrink-0"
               />
               <div>
                 <span className="font-serif text-xl font-bold text-white block">
                   {OFFICE_DATA.name}
                 </span>
                 <span className="text-xs text-amber-400 block font-medium">
-                  {OFFICE_DATA.corporateName}
+                  {OFFICE_DATA.legalNameAndCnpj}
                 </span>
               </div>
             </div>
@@ -44,14 +44,24 @@ export const Footer: React.FC<FooterProps> = ({ onOpenCrm }) => {
               "Você não precisa enfrentar isso sozinho." Advocacia artesanal e estratégica, com atendimento direto pelos titulares e compromisso inegociável com a verdade.
             </p>
 
-            <div className="space-y-1 text-xs text-slate-400 pt-1">
-              <div className="flex items-center gap-1.5 text-amber-300">
-                <ShieldCheck className="w-4 h-4 text-amber-400" />
-                <span><strong>{LAWYERS[0].name}</strong> — {LAWYERS[0].oab}</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-amber-300">
-                <ShieldCheck className="w-4 h-4 text-amber-400" />
-                <span><strong>{LAWYERS[1].name}</strong> — {LAWYERS[1].oab}</span>
+            {/* Quadro de Advogados e OAB */}
+            <div className="pt-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                Corpo Jurídico & Registros OAB:
+              </span>
+              <div className="space-y-1.5 text-xs text-slate-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                <div className="flex items-center gap-2 text-amber-300">
+                  <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>
+                    <strong>{LAWYERS[0].name}</strong> — <span className="text-amber-200">{LAWYERS[0].oab}</span>
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-amber-300">
+                  <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span>
+                    <strong>{LAWYERS[1].name}</strong> — <span className="text-amber-200">{LAWYERS[1].oab}</span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -65,7 +75,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenCrm }) => {
               <li>
                 <a href="#quem-somos" className="hover:text-amber-400 transition flex items-center gap-1">
                   <ChevronRight className="w-3 h-3 text-amber-400" />
-                  Quem Somos & Quadro Societário
+                  Quem Somos & Sócios
                 </a>
               </li>
               <li>
@@ -111,11 +121,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenCrm }) => {
               <p className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <span>
-                  {OFFICE_DATA.address.fullFormatted}
+                  <strong>Endereço:</strong> {OFFICE_DATA.address.fullFormatted}
                 </span>
               </p>
 
-              <p className="pt-1">
+              <p className="pt-0.5">
                 <a
                   href={OFFICE_DATA.address.directionsUrl}
                   target="_blank"
@@ -129,27 +139,66 @@ export const Footer: React.FC<FooterProps> = ({ onOpenCrm }) => {
 
               <p className="flex items-center gap-2 pt-1">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>WhatsApp: {OFFICE_DATA.phone}</span>
+                <span><strong>Telefone / WhatsApp:</strong> {OFFICE_DATA.phone}</span>
               </p>
 
               <p className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>{OFFICE_DATA.email}</span>
+                <span><strong>E-mail:</strong> {OFFICE_DATA.email}</span>
               </p>
 
               <p className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-slate-400 shrink-0" />
-                <span>{OFFICE_DATA.openingHours}</span>
+                <span><strong>Atendimento:</strong> {OFFICE_DATA.openingHours}</span>
               </p>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Bar with Copyright and Restricted Access Link */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        {/* Quadro Institucional de Dados Gerais do Escritório */}
+        <div className="my-8 p-4 rounded-xl bg-slate-900/70 border border-slate-800 text-xs text-slate-300 grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            © {new Date().getFullYear()} {OFFICE_DATA.name}. Todos os direitos reservados.
+            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 block mb-1">
+              Razão Social & CNPJ
+            </span>
+            <p className="font-semibold text-white">
+              {OFFICE_DATA.legalNameAndCnpj}
+            </p>
+            <p className="text-[11px] text-slate-400 mt-0.5">
+              Sociedade Individual de Advocacia constituída e regularizada
+            </p>
+          </div>
+
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 block mb-1">
+              Advogados Responsáveis
+            </span>
+            <p className="text-slate-200">
+              <strong className="text-white">{LAWYERS[0].name}</strong> ({LAWYERS[0].oab})
+            </p>
+            <p className="text-slate-200">
+              <strong className="text-white">{LAWYERS[1].name}</strong> ({LAWYERS[1].oab})
+            </p>
+          </div>
+
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 block mb-1">
+              Endereço & Atendimento
+            </span>
+            <p className="text-slate-200">
+              {OFFICE_DATA.address.fullFormatted}
+            </p>
+            <p className="text-[11px] text-emerald-400 font-medium mt-0.5">
+              Tel/WhatsApp: {OFFICE_DATA.phone}
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Bar with Copyright and Restricted Access Link */}
+        <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <div>
+            © {new Date().getFullYear()} {OFFICE_DATA.name} — {OFFICE_DATA.corporateName}. Todos os direitos reservados.
           </div>
 
           {/* Restricted Area Link */}
