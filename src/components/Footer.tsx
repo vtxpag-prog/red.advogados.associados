@@ -25,9 +25,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenCrm }) => {
           {/* Brand & Mission Column */}
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center font-serif text-lg font-bold text-white shadow-md border border-amber-400/40">
-                RED
-              </div>
+              <img
+                src="/assets/aistudio/emblema_RED_advocacia_v2.png"
+                alt="Emblema RED Advocacia"
+                className="w-11 h-11 sm:w-12 sm:h-12 object-contain drop-shadow-md shrink-0"
+              />
               <div>
                 <span className="font-serif text-xl font-bold text-white block">
                   {OFFICE_DATA.name}

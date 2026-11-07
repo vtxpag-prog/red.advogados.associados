@@ -68,9 +68,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCrm, onOpenContact }) => {
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         <a href="#hero" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center font-serif text-lg font-bold text-white shadow-md shadow-amber-900/30 border border-amber-400/40 group-hover:scale-105 transition transform">
-            RED
-          </div>
+          <img
+            src="/assets/aistudio/emblema_RED_advocacia_v2.png"
+            alt="Emblema RED Advocacia"
+            className="w-11 h-11 sm:w-12 sm:h-12 object-contain drop-shadow-md group-hover:scale-105 transition transform shrink-0"
+          />
           <div className="flex flex-col">
             <span className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-white group-hover:text-amber-300 transition">
               RED Advocacia

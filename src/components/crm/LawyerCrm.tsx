@@ -423,9 +423,11 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
           {/* Login Box */}
           <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-xl">
             <div className="text-center mb-6">
-              <div className="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center font-serif text-xl font-bold text-white mx-auto shadow-md">
-                RED
-              </div>
+              <img
+                src="/assets/aistudio/emblema_RED_advocacia_v2.png"
+                alt="Emblema RED Advocacia"
+                className="w-16 h-16 object-contain mx-auto drop-shadow-md"
+              />
               <h2 className="font-serif text-2xl font-bold text-slate-900 mt-3">
                 Área do Advogado (CRM)
               </h2>
@@ -579,9 +581,11 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
           </button>
 
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-amber-600 flex items-center justify-center font-bold text-white text-xs shadow-xs">
-              RED
-            </div>
+            <img
+              src="/assets/aistudio/emblema_RED_advocacia_v2.png"
+              alt="Emblema RED Advocacia"
+              className="w-9 h-9 object-contain drop-shadow-xs shrink-0"
+            />
             <div>
               <span className="font-bold text-sm text-slate-900 block leading-tight">CRM RED Advocacia</span>
               <span className="text-[11px] text-slate-500">
