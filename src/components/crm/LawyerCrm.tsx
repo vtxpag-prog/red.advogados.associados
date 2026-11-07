@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   Lock, 
   User, 
@@ -24,7 +24,11 @@ import {
   ShieldAlert,
   Clock,
   Sparkles,
-  Download
+  Download,
+  Bell,
+  Check,
+  X,
+  AlertTriangle
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -106,6 +110,117 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
   const [draggedLeadId, setDraggedLeadId] = useState<string | null>(null);
   const [draggedOverColumn, setDraggedOverColumn] = useState<KanbanStatus | null>(null);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+
+  // Notification Indicator States (Deadlines & Reminders)
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notificationFilter, setNotificationFilter] = useState<'pending' | 'all'>('pending');
+  const notificationsRef = useRef<HTMLDivElement>(null);
+
+  // Close notifications popover on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+        setShowNotifications(false);
+      }
+    };
+    if (showNotifications) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showNotifications]);
+
+  // Aggregate all upcoming deadlines, meetings and reminders across all leads
+  const allNotifications = useMemo(() => {
+    interface NotifItem {
+      lead: Lead;
+      interaction: NonNullable<Lead['interactions']>[number];
+      dueDate?: string;
+      isOverdue: boolean;
+      dueLabel: string;
+    }
+
+    const list: NotifItem[] = [];
+    const now = new Date();
+
+    leads.forEach((l) => {
+      (l.interactions || []).forEach((int) => {
+        if (int.dueDate || int.type === 'deadline' || int.type === 'reminder') {
+          let isOverdue = false;
+          let dueLabel = 'Sem data limite';
+
+          if (int.dueDate) {
+            const due = new Date(int.dueDate);
+            const diffMs = due.getTime() - now.getTime();
+            const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+            const dateStr = due.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+            const timeStr = due.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            if (diffMs < 0) {
+              isOverdue = true;
+              dueLabel = `Vencido (${dateStr} às ${timeStr})`;
+            } else if (diffDays <= 0) {
+              dueLabel = `Hoje às ${timeStr}`;
+            } else if (diffDays === 1) {
+              dueLabel = `Amanhã às ${timeStr}`;
+            } else if (diffDays <= 7) {
+              dueLabel = `Em ${diffDays} dias (${dateStr})`;
+            } else {
+              dueLabel = `${dateStr} às ${timeStr}`;
+            }
+          }
+
+          list.push({
+            lead: l,
+            interaction: int,
+            dueDate: int.dueDate,
+            isOverdue,
+            dueLabel,
+          });
+        }
+      });
+    });
+
+    // Sort: pending first, then overdue, then closest due date
+    return list.sort((a, b) => {
+      if (!!a.interaction.isCompleted !== !!b.interaction.isCompleted) {
+        return a.interaction.isCompleted ? 1 : -1;
+      }
+      if (a.isOverdue !== b.isOverdue) {
+        return a.isOverdue ? -1 : 1;
+      }
+      const timeA = a.dueDate ? new Date(a.dueDate).getTime() : 9999999999999;
+      const timeB = b.dueDate ? new Date(b.dueDate).getTime() : 9999999999999;
+      return timeA - timeB;
+    });
+  }, [leads]);
+
+  const pendingNotifications = useMemo(() => {
+    return allNotifications.filter((n) => !n.interaction.isCompleted);
+  }, [allNotifications]);
+
+  const overdueCount = useMemo(() => {
+    return pendingNotifications.filter((n) => n.isOverdue).length;
+  }, [pendingNotifications]);
+
+  // Toggle completion of deadline or reminder from notification list
+  const handleToggleNotificationCompleted = (leadId: string, interactionId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLeads((prev) =>
+      prev.map((l) => {
+        if (l.id !== leadId) return l;
+        const updatedInts = (l.interactions || []).map((int) =>
+          int.id === interactionId ? { ...int, isCompleted: !int.isCompleted } : int
+        );
+        return {
+          ...l,
+          updatedAt: new Date().toISOString(),
+          interactions: updatedInts,
+        };
+      })
+    );
+  };
 
   // New Lead Form in CRM
   const [newLeadName, setNewLeadName] = useState('');
@@ -632,6 +747,181 @@ export const LawyerCrm: React.FC<LawyerCrmProps> = ({ onBackToSite }) => {
               <span>Usuários & Acessos</span>
             </button>
           </nav>
+
+          {/* Notification Indicator (Upcoming Deadlines & Reminders) */}
+          <div className="relative" ref={notificationsRef}>
+            <button
+              type="button"
+              onClick={() => setShowNotifications(!showNotifications)}
+              className={`relative flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold border transition cursor-pointer ${
+                showNotifications
+                  ? 'bg-amber-100 text-amber-950 border-amber-300 shadow-xs'
+                  : overdueCount > 0
+                    ? 'bg-rose-50 hover:bg-rose-100 text-rose-900 border-rose-300'
+                    : pendingNotifications.length > 0
+                      ? 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
+              }`}
+              title="Prazos processuais e lembretes cadastrados no histórico dos clientes"
+            >
+              <div className="relative flex items-center justify-center">
+                <Bell className={`w-4 h-4 ${
+                  overdueCount > 0 ? 'text-rose-600' : pendingNotifications.length > 0 ? 'text-amber-700' : 'text-slate-500'
+                }`} />
+                {pendingNotifications.length > 0 && (
+                  <span className={`absolute -top-2 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white shadow-xs ${
+                    overdueCount > 0 ? 'bg-rose-600 animate-pulse' : 'bg-amber-600'
+                  }`}>
+                    {pendingNotifications.length}
+                  </span>
+                )}
+              </div>
+              <span className="hidden md:inline">
+                {overdueCount > 0 
+                  ? `${overdueCount} Prazo${overdueCount > 1 ? 's' : ''} Crítico${overdueCount > 1 ? 's' : ''}`
+                  : `Lembretes (${pendingNotifications.length})`
+                }
+              </span>
+            </button>
+
+            {/* Notification Dropdown Popover */}
+            {showNotifications && (
+              <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[85vh] animate-in fade-in slide-in-from-top-2 duration-150">
+                {/* Popover Header */}
+                <div className="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0">
+                      <Bell className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-900 leading-tight">
+                        Prazos & Lembretes da Equipe
+                      </h4>
+                      <span className="text-[10px] text-slate-500">
+                        {pendingNotifications.length} pendente(s) • {allNotifications.length} no total
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Filter Tabs */}
+                  <div className="flex items-center bg-slate-200/80 p-0.5 rounded-lg text-[10px]">
+                    <button
+                      type="button"
+                      onClick={() => setNotificationFilter('pending')}
+                      className={`px-2 py-0.5 rounded-md font-medium transition ${
+                        notificationFilter === 'pending'
+                          ? 'bg-white text-slate-900 font-bold shadow-xs'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      Pendentes ({pendingNotifications.length})
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setNotificationFilter('all')}
+                      className={`px-2 py-0.5 rounded-md font-medium transition ${
+                        notificationFilter === 'all'
+                          ? 'bg-white text-slate-900 font-bold shadow-xs'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      Todos ({allNotifications.length})
+                    </button>
+                  </div>
+                </div>
+
+                {/* Popover Items List */}
+                <div className="p-2 overflow-y-auto divide-y divide-slate-100 max-h-[60vh]">
+                  {(notificationFilter === 'pending' ? pendingNotifications : allNotifications).length === 0 ? (
+                    <div className="py-8 px-4 text-center">
+                      <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2 opacity-80" />
+                      <p className="text-xs font-bold text-slate-800">Nenhum prazo ou lembrete pendente!</p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        Todos os prazos e contatos agendados estão em dia.
+                      </p>
+                    </div>
+                  ) : (
+                    (notificationFilter === 'pending' ? pendingNotifications : allNotifications).map((item) => {
+                      const isDeadline = item.interaction.type === 'deadline';
+
+                      return (
+                        <div
+                          key={`${item.lead.id}-${item.interaction.id}`}
+                          onClick={() => {
+                            setSelectedLead(item.lead);
+                            setShowNotifications(false);
+                          }}
+                          className={`p-3 rounded-xl hover:bg-slate-50 transition cursor-pointer group flex items-start gap-2.5 my-1 ${
+                            item.interaction.isCompleted 
+                              ? 'opacity-60 bg-slate-50/50' 
+                              : item.isOverdue 
+                                ? 'bg-rose-50/60 border border-rose-200' 
+                                : 'bg-white'
+                          }`}
+                        >
+                          {/* Toggle Done Checkbox */}
+                          <button
+                            type="button"
+                            onClick={(e) => handleToggleNotificationCompleted(item.lead.id, item.interaction.id, e)}
+                            className={`mt-0.5 w-5 h-5 rounded-md border flex items-center justify-center shrink-0 transition ${
+                              item.interaction.isCompleted
+                                ? 'bg-emerald-600 border-emerald-600 text-white'
+                                : 'border-slate-300 hover:border-amber-600 bg-white'
+                            }`}
+                            title={item.interaction.isCompleted ? 'Reabrir prazo/lembrete' : 'Marcar como cumprido'}
+                          >
+                            {item.interaction.isCompleted && <Check className="w-3.5 h-3.5" />}
+                          </button>
+
+                          {/* Content */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-1 mb-1">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 truncate">
+                                {item.lead.name}
+                              </span>
+                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+                                item.interaction.isCompleted
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : item.isOverdue
+                                    ? 'bg-rose-100 text-rose-800 font-bold'
+                                    : isDeadline
+                                      ? 'bg-rose-100 text-rose-800'
+                                      : 'bg-amber-100 text-amber-800'
+                              }`}>
+                                {item.interaction.isCompleted ? '✓ Cumprido' : item.dueLabel}
+                              </span>
+                            </div>
+
+                            <p className="text-xs font-semibold text-slate-900 group-hover:text-amber-800 transition line-clamp-1">
+                              {item.interaction.title}
+                            </p>
+
+                            <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5 leading-relaxed">
+                              {item.interaction.description}
+                            </p>
+
+                            <div className="flex items-center justify-between pt-1.5 text-[10px] text-slate-400">
+                              <span>Resp: <strong className="text-slate-600">{item.interaction.author}</strong></span>
+                              <span className="text-amber-700 font-medium group-hover:underline flex items-center gap-0.5">
+                                Ver ficha ➔
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                {/* Popover Footer */}
+                <div className="p-2.5 bg-slate-50 border-t border-slate-200 text-center">
+                  <span className="text-[10px] text-slate-500 block">
+                    Clique em qualquer item para abrir a ficha completa do cliente.
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
 
           <button
             onClick={handleLogout}

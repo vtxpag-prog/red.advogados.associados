@@ -21,7 +21,9 @@ import {
   Building,
   Mail,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  AlertTriangle,
+  Bell
 } from 'lucide-react';
 import { Lead, Interaction, KanbanStatus } from '../../types';
 import { OFFICE_DATA, LAWYERS } from '../../data/initialData';
@@ -43,6 +45,8 @@ const KANBAN_OPTIONS: { id: KanbanStatus; label: string }[] = [
 ];
 
 const INTERACTION_TYPES = [
+  { id: 'deadline', label: 'Prazo Processual / Fatal', icon: AlertTriangle, color: 'text-rose-700 bg-rose-50 border-rose-200' },
+  { id: 'reminder', label: 'Lembrete / Retorno ao Cliente', icon: Bell, color: 'text-amber-800 bg-amber-50 border-amber-200' },
   { id: 'whatsapp', label: 'Mensagem de WhatsApp', icon: MessageSquare, color: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
   { id: 'call', label: 'Ligação Telefônica', icon: Phone, color: 'text-blue-700 bg-blue-50 border-blue-200' },
   { id: 'meeting', label: 'Reunião Presencial / Online', icon: Users, color: 'text-amber-800 bg-amber-50 border-amber-200' },
@@ -63,10 +67,23 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [author, setAuthor] = useState(currentUserName || 'Dr. Reinaldo Eustáquio Dias');
+  const [dueDate, setDueDate] = useState('');
+  const [priority, setPriority] = useState<'normal' | 'medium' | 'high'>('medium');
   const [copied, setCopied] = useState(false);
   const [status, setStatus] = useState<KanbanStatus>(lead.status);
 
   const interactions = lead.interactions || [];
+
+  const handleToggleCompleted = (intId: string) => {
+    const updatedLead: Lead = {
+      ...lead,
+      updatedAt: new Date().toISOString(),
+      interactions: interactions.map((item) =>
+        item.id === intId ? { ...item, isCompleted: !item.isCompleted } : item
+      ),
+    };
+    onUpdateLead(updatedLead);
+  };
 
   const handleStatusChange = (newStatus: KanbanStatus) => {
     setStatus(newStatus);
@@ -102,6 +119,9 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
       description: description.trim(),
       date: new Date().toISOString(),
       author: author.trim() || currentUserName || 'Advogado',
+      dueDate: dueDate.trim() || undefined,
+      priority: (interactionType === 'deadline' || interactionType === 'reminder' || dueDate) ? priority : undefined,
+      isCompleted: false,
     };
 
     const updatedLead: Lead = {
@@ -113,6 +133,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
     onUpdateLead(updatedLead);
     setTitle('');
     setDescription('');
+    setDueDate('');
   };
 
   // Generate formatted text content for download / sharing
@@ -486,6 +507,63 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
 
               </div>
 
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                {/* Data/Hora Limite (Prazo ou Lembrete) */}
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1 flex items-center justify-between">
+                    <span>Data/Hora Limite do Prazo ou Lembrete</span>
+                    <span className="text-[10px] text-amber-700 font-normal">
+                      {interactionType === 'deadline' || interactionType === 'reminder' ? 'Recomendado' : 'Opcional'}
+                    </span>
+                  </label>
+                  <input
+                    type="datetime-local"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500 shadow-xs"
+                  />
+                </div>
+
+                {/* Prioridade */}
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    Nível de Urgência
+                  </label>
+                  <div className="flex items-center gap-3 pt-2 text-xs">
+                    <label className="flex items-center gap-1.5 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="modal_priority"
+                        checked={priority === 'normal'}
+                        onChange={() => setPriority('normal')}
+                        className="text-amber-600 focus:ring-amber-500"
+                      />
+                      <span className="text-slate-700">Normal</span>
+                    </label>
+                    <label className="flex items-center gap-1.5 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="modal_priority"
+                        checked={priority === 'medium'}
+                        onChange={() => setPriority('medium')}
+                        className="text-amber-600 focus:ring-amber-500"
+                      />
+                      <span className="text-amber-800 font-medium">Média</span>
+                    </label>
+                    <label className="flex items-center gap-1.5 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="modal_priority"
+                        checked={priority === 'high'}
+                        onChange={() => setPriority('high')}
+                        className="text-rose-600 focus:ring-rose-500"
+                      />
+                      <span className="text-rose-700 font-bold">Alta / Fatal</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
               {/* Descrição Detalhada */}
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
@@ -503,7 +581,7 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
 
               <div className="flex items-center justify-between pt-1">
                 <span className="text-[10px] text-slate-500">
-                  Data e hora de criação registradas automaticamente no padrão oficial.
+                  Prazos e lembretes com data aparecem instantaneamente nas notificações do CRM.
                 </span>
                 <button
                   type="submit"
@@ -547,7 +625,9 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
                       </div>
 
                       {/* Content Card */}
-                      <div className="bg-white rounded-xl p-4 border border-slate-200 hover:border-slate-300 transition shadow-xs space-y-2">
+                      <div className={`bg-white rounded-xl p-4 border transition shadow-xs space-y-2.5 ${
+                        int.isCompleted ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200 hover:border-slate-300'
+                      }`}>
                         
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <div className="flex items-center gap-2">
@@ -567,6 +647,46 @@ export const LeadDetailModal: React.FC<LeadDetailModalProps> = ({
                             </span>
                           </div>
                         </div>
+
+                        {/* Se tem prazo ou lembrete com data */}
+                        {int.dueDate && (
+                          <div className={`p-2.5 rounded-lg border text-xs flex flex-wrap items-center justify-between gap-2 ${
+                            int.isCompleted 
+                              ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+                              : new Date(int.dueDate) < new Date()
+                                ? 'bg-rose-50 border-rose-300 text-rose-900'
+                                : 'bg-amber-50/70 border-amber-300 text-amber-900'
+                          }`}>
+                            <div className="flex items-center gap-2">
+                              {int.isCompleted ? (
+                                <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                              ) : (
+                                <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                              )}
+                              <div>
+                                <span className="font-semibold block">
+                                  {int.isCompleted ? '✓ Prazo / Lembrete Cumprido' : 'Prazo / Lembrete Programado:'}
+                                </span>
+                                <span className="text-[11px] opacity-90 font-mono">
+                                  {new Date(int.dueDate).toLocaleDateString('pt-BR')} às {new Date(int.dueDate).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                  {new Date(int.dueDate) < new Date() && !int.isCompleted && ' (Vencido)'}
+                                </span>
+                              </div>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => handleToggleCompleted(int.id)}
+                              className={`text-[11px] font-bold px-2.5 py-1 rounded-md border transition cursor-pointer ${
+                                int.isCompleted 
+                                  ? 'bg-white hover:bg-emerald-100 text-emerald-700 border-emerald-300' 
+                                  : 'bg-emerald-600 hover:bg-emerald-700 text-white border-transparent shadow-xs'
+                              }`}
+                            >
+                              {int.isCompleted ? 'Reabrir Lembrete' : 'Marcar como Cumprido'}
+                            </button>
+                          </div>
+                        )}
 
                         <p className="text-xs text-slate-700 whitespace-pre-line leading-relaxed">
                           {int.description}

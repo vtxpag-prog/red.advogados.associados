@@ -8,11 +8,23 @@ export type KanbanStatus =
 
 export interface Interaction {
   id: string;
-  type: 'whatsapp' | 'call' | 'meeting' | 'protocol' | 'hearing' | 'document' | 'internal';
+  type: 
+    | 'whatsapp' 
+    | 'call' 
+    | 'meeting' 
+    | 'protocol' 
+    | 'hearing' 
+    | 'document' 
+    | 'internal'
+    | 'deadline'
+    | 'reminder';
   title: string;
   description: string;
   date: string;
   author: string;
+  dueDate?: string;
+  isCompleted?: boolean;
+  priority?: 'high' | 'medium' | 'normal';
 }
 
 export interface Lead {
